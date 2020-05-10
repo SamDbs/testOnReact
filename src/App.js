@@ -7,7 +7,7 @@ import { Container, Row } from 'react-bootstrap'
 
 function App(){
   const [fluxs, setFluxs] = useState([]);
-  useEffect( async () => {
+  useEffect(async () => {
     const myHeaders = new Headers()
     myHeaders.append('Content-Type', 'application/json')
     const response = await fetch('http://localhost:3000/fluxs',{
@@ -15,8 +15,6 @@ function App(){
     headers: myHeaders,
 
   }).then(response => response.json())
-
-    console.log(response)
 
     setFluxs(response)
   },

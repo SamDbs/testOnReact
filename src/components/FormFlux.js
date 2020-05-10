@@ -21,7 +21,6 @@ function FormFlux() {
     })
     setTitle("")
     setUrl("")
-    console.log(response)
   }
 
   return (
