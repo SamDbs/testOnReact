@@ -31,14 +31,22 @@ function Flux(props) {
   useEffect(async () => {
     const myHeaders = new Headers()
     myHeaders.append('Content-Type', 'application/json')
-    window.setInterval(   
+
     const response = await fetch('http://localhost:3000/articles?flux_id=' + props.flux.id, {
-      method: 'GET',
-      headers: myHeaders,
-    }).then((response) => response.json())
+        method: 'GET',
+        headers: myHeaders,
+      }).then((response) => response.json())
 
+    setArticles(response)
 
-    setArticles(response), 15000)
+    window.setInterval( async () => {   
+      const response = await fetch('http://localhost:3000/articles?flux_id=' + props.flux.id, {
+        method: 'GET',
+        headers: myHeaders,
+      }).then((response) => response.json())
+
+      setArticles(response)
+    }, 50000)
   }, [])
 
   return (
