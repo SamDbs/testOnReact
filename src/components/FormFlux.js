@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button, Container, Row } from 'react-bootstrap'
 
 function FormFlux() {
   const [title, setTitle] = useState("")
