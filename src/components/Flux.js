@@ -2,52 +2,64 @@ import React, { useState, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import Article from './Article'
 
-
-
 function Flux(props) {
   const [articles, setArticles] = useState([])
-  const [read, setRead] = useState("")
+  const [read, setRead] = useState('')
 
-  const modifyRead = async (articleId,read) => {
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    const appel = await fetch('http://localhost:3000/articles/'+articleId+'?change=' + read, {
-      method: 'PATCH',
-      headers: myHeaders,
-      body: JSON.stringify({
-        read: read
-      }),
-    })
+  const modifyRead = async (articleId, read) => {
+    const myHeaders = new Headers()
+    myHeaders.append('Content-Type', 'application/json')
+    const appel = await fetch(
+      'http://localhost:3000/articles/' + articleId + '?change=' + read,
+      {
+        method: 'PATCH',
+        headers: myHeaders,
+        body: JSON.stringify({
+          read: read,
+        }),
+      },
+    )
 
-    const response = await fetch('http://localhost:3000/articles?flux_id=' + props.flux.id, {
-      method: 'GET',
-      headers: myHeaders,
-    }).then((response) => response.json())
+    const response = await fetch(
+      'http://localhost:3000/articles?flux_id=' + props.flux.id,
+      {
+        method: 'GET',
+        headers: myHeaders,
+      },
+    ).then((response) => response.json())
 
     setArticles(response)
   }
 
-
-  useEffect(async () => {
-    const myHeaders = new Headers()
-    myHeaders.append('Content-Type', 'application/json')
-
-    const response = await fetch('http://localhost:3000/articles?flux_id=' + props.flux.id, {
-        method: 'GET',
-        headers: myHeaders,
-      }).then((response) => response.json())
-
-    setArticles(response)
-
-    window.setInterval( async () => {   
-      const response = await fetch('http://localhost:3000/articles?flux_id=' + props.flux.id, {
-        method: 'GET',
-        headers: myHeaders,
-      }).then((response) => response.json())
+  useEffect(() => {
+    async function call() {
+      const myHeaders = new Headers()
+      myHeaders.append('Content-Type', 'application/json')
+      const response = await fetch(
+        'http://localhost:3000/articles?flux_id=' + props.flux.id,
+        {
+          method: 'GET',
+          headers: myHeaders,
+        },
+      ).then((response) => response.json())
 
       setArticles(response)
-    }, 50000)
-  }, [])
+
+      setInterval(async () => {
+        const response = await fetch(
+          'http://localhost:3000/articles?flux_id=' + props.flux.id,
+          {
+            method: 'GET',
+            headers: myHeaders,
+          },
+        ).then((response) => response.json())
+
+        setArticles(response)
+      }, 50000)
+    }
+    call()
+    console.log(props.flux.id)
+  }, [props.flux.id])
 
   return (
     <Card className="ml-4 mb-4 border border-dark " style={{ width: '30rem' }}>
