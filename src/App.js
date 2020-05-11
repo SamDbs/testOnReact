@@ -5,27 +5,28 @@ import Flux from './components/Flux'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Container, Row } from 'react-bootstrap'
 
-function App(){
-  const [fluxs, setFluxs] = useState([]);
-  useEffect(async () => {
-    const myHeaders = new Headers()
-    myHeaders.append('Content-Type', 'application/json')
-    const response = await fetch('http://localhost:3000/fluxs',{
-    method: "GET",
-    headers: myHeaders,
+function App() {
+  const [fluxs, setFluxs] = useState([])
 
-  }).then(response => response.json())
+  useEffect(() => {
+    async function call() {
+      const myHeaders = new Headers()
+      myHeaders.append('Content-Type', 'application/json')
+      const response = await fetch('http://localhost:3000/fluxs', {
+        method: 'GET',
+        headers: myHeaders,
+      }).then((response) => response.json())
 
-    setFluxs(response)
-  },
-  [] );
+      setFluxs(response)
+    }
+    call()
+  }, [])
 
   return (
     <div className="App">
       <FormFlux />
       <Container fluid>
         <Row>
-
           {fluxs.map((elem) => (
             <Flux key={elem.id} flux={elem} />
           ))}

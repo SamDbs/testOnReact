@@ -15,9 +15,11 @@ function Article(props) {
         <p className="h6">{props.article.pub}</p>
       </div>
       <p className="h6">{props.article.summary}</p>
-      <Button onClick={() => props.modifyRead(props.article.id, !props.article.read)}>
-        {text}
+      <div className="text-right"> 
+      <Button variant="link"  onClick={() => props.modifyRead(props.article.id, !props.article.read)}>
+       {text}
       </Button>
+      </div>
     </Card>
   )
 }

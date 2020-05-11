@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Card } from 'react-bootstrap'
+import { Card, Pagination } from 'react-bootstrap'
 import Article from './Article'
 
 function Flux(props) {
   const [articles, setArticles] = useState([])
-  const [read, setRead] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [artsPerPage, setArtsPerPage] = useState(5)
 
   const modifyRead = async (articleId, read) => {
     const myHeaders = new Headers()
@@ -58,17 +59,42 @@ function Flux(props) {
       }, 50000)
     }
     call()
-    console.log(props.flux.id)
   }, [props.flux.id])
 
-  return (
-    <Card className="ml-4 mb-4 border border-dark " style={{ width: '30rem' }}>
-      <h1 className="border border-dark">{props.flux.title}</h1>
+  // Get current articles
 
-      {articles.map((elem) => (
-        <Article key={elem.id} article={elem} modifyRead={modifyRead} />
-      ))}
-    </Card>
+  const indexOfLastArticle = currentPage * artsPerPage
+  const indexofFirstArticle = indexOfLastArticle - artsPerPage
+  const currentArts = articles.slice(indexofFirstArticle, indexOfLastArticle)
+
+  const paginationItems = [];
+  const nbPages = articles.length /artsPerPage
+
+
+  
+  for(let i=0; i< nbPages;i++){ 
+  paginationItems.push(<Pagination.Item active={i+1 === currentPage} key={i} onClick={() => setCurrentPage(i+1)}>{i+1}</Pagination.Item>)
+  }
+  return (
+    
+      <Card
+        className="ml-4 mb-4 border border-dark "
+        style={{ width: '35rem' }}
+      >
+        <h3 className="border border-dark p-2">
+          {' '}
+          Les news de {props.flux.title}
+        </h3>
+        <div className="pt-3 pb-3">
+          {currentArts.map((elem) => (
+            <Article key={elem.id} article={elem} modifyRead={modifyRead} />
+          ))}
+        </div>
+        
+        <Pagination className="justify-content-center">
+            {paginationItems}
+        </Pagination>
+      </Card>
   )
 }
 
