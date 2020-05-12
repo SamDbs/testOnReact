@@ -21,6 +21,7 @@ function FormFlux() {
     })
     setTitle("")
     setUrl("")
+    window.location.reload(false);
   }
 
   return (

@@ -5,7 +5,7 @@ import Article from './Article'
 function Flux(props) {
   const [articles, setArticles] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [artsPerPage, setArtsPerPage] = useState(5)
+  const artsPerPage = 5
 
   const modifyRead = async (articleId, read) => {
     const myHeaders = new Headers()
